@@ -1,5 +1,4 @@
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.UUID;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
