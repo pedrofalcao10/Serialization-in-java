@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersonManager {
-    // Generate a list of Serialization_TCP_P2C_in_java.src.Person objects
+    // Generate a list of Person objects
     public static List<Person> generatePersons(int numPersons) {
         List<Person> personList = new ArrayList<>();
 
