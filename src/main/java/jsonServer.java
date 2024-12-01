@@ -1,10 +1,6 @@
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
 
 public class jsonServer {
     public static void main(String[] args) {
@@ -26,32 +22,18 @@ public class jsonServer {
     }
 
     public static void handleClient(Socket connectionSocket) {
-        try (
-                CountingInputStream countingInputStream = new CountingInputStream(connectionSocket.getInputStream());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(countingInputStream));
-        ) {
-            //Read JSON data from the client
-            StringBuilder jsonDataBuilder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                jsonDataBuilder.append(line).append("\n");
-            }
-            String jsonData = jsonDataBuilder.toString();
-            System.out.println("Received JSON data:\n" + jsonData + "\n");
+        try {
+            DataInputStream dis = new DataInputStream(connectionSocket.getInputStream());
 
-            //Measure bytes received
-            long receivedBytes = countingInputStream.getBytesRead();
-            System.out.println("Total bytes received from client: " + receivedBytes);
+            // Read the length of the JSON data (4 bytes)
+            int dataLength = dis.readInt();
+            System.out.println("Expected JSON size: " + dataLength + " bytes");
 
-            //Deserialize JSON into a list of Person objects
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<Person> personList = objectMapper.readValue(jsonData, new TypeReference<List<Person>>() {});
-
-            System.out.println("Deserialized objects:");
-            for (Person person : personList) {
-                System.out.println(person);
-            }
-
+            // Read the JSON data
+            byte[] dataBuffer = new byte[dataLength];
+            dis.readFully(dataBuffer);
+            String jsonData = new String(dataBuffer);
+            System.out.println("Received JSON data: " + jsonData);
         }
         catch (IOException e) {
             System.err.println("Error handling client: " + e.getMessage());

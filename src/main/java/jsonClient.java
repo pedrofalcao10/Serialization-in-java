@@ -12,10 +12,7 @@ public class jsonClient {
         try (Socket socket = new Socket(HOST, PORT)) {
             System.out.println("Connected to server.");
 
-            CountingOutputStream countingOutputStream = new CountingOutputStream(socket.getOutputStream());
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(countingOutputStream), true);
-
-            int numPersons = 3;
+            int numPersons = 200;
 
             // Create a list of Person objects
             List<Person> personList = PersonManager.generatePersons(numPersons);
@@ -24,13 +21,21 @@ public class jsonClient {
             // Serialize and send the list of Persons as JSON
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonData = objectMapper.writeValueAsString(personList);
-            writer.println(jsonData);
-            writer.flush();
+            byte[] jsonBytes = jsonData.getBytes();
 
-            // Calculate bytes sent
-            long totalBytesSent = countingOutputStream.getBytesWritten();
-            System.out.println("Sent Person list as JSON:\n" + jsonData);
-            System.out.println("Total bytes sent: " + totalBytesSent + " bytes");
+            // Calculate the size of the serialized JSON data
+            int dataLength = jsonBytes.length;
+
+            // Create a socket and send the data
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+
+            // Send the length of the JSON first (4 bytes)
+            dataOutputStream.writeInt(dataLength);
+
+            // Send the JSON data
+            dataOutputStream.write(jsonBytes);
+            System.out.println("Sent JSON data: " + jsonData);
+            System.out.println("Serialized JSON size: " + dataLength + " bytes");
 
         } catch (IOException e) {
             System.err.println("Client error: " + e.getMessage());
