@@ -5,7 +5,7 @@ import java.util.List;
 public class objClient {
     public static void main(String[] args) {
         final String HOST = "127.0.0.1";
-        final int PORT = 65432;
+        final int PORT = 99999;
 
         try (Socket socket = new Socket(HOST, PORT)) {
             System.out.println("Connected to server.");
@@ -15,7 +15,7 @@ public class objClient {
 
             ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 
-            int numPersons = 200;
+            int numPersons = 1;
 
             //Create and send a list of Person objects
             List<Person> personList = PersonManager.generatePersons(numPersons);

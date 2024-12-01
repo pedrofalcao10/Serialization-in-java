@@ -8,7 +8,7 @@ import java.util.List;
 
 public class jsonServer {
     public static void main(String[] args) {
-        final int PORT = 65432;
+        final int PORT = 99999;
 
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server is listening on PORT: " + PORT);
