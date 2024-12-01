@@ -4,7 +4,7 @@ import java.net.Socket;
 
 public class xmlServer {
     public static void main(String[] args) {
-        final int PORT = 99999;
+        final int PORT = 55555;
 
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server is listening on PORT: " + PORT);

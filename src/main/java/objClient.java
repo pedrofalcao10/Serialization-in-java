@@ -5,7 +5,7 @@ import java.util.List;
 public class objClient {
     public static void main(String[] args) {
         final String HOST = "127.0.0.1";
-        final int PORT = 99999;
+        final int PORT = 55555;
 
         try (Socket socket = new Socket(HOST, PORT)) {
             System.out.println("Connected to server.");
