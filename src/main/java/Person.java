@@ -2,13 +2,19 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class Person extends HashMap<String, Object> implements Serializable {
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+@JacksonXmlRootElement(localName = "Person")
+public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final String name;
-    private final String localization;
-    private final int age;
+    private String name;
+    private String localization;
+    private int age;
     private String numID; // Unique Identifier
+
+    // Default constructor (required for Jackson)
+    public Person() {}
 
     public Person(String name, String localization, int age) {
         this.name = name;
@@ -16,11 +22,11 @@ public class Person extends HashMap<String, Object> implements Serializable {
         this.age = age;
         this.numID = generateUniqueID();
     }
+
     // Generate a universally unique identifier (UUID)
     private String generateUniqueID() {
         return UUID.randomUUID().toString();
     }
-
 
     public String getName() {
         return name;
