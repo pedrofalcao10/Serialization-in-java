@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.util.List;
 
 public class objServer {
     public static void main(String[] args){
@@ -32,32 +31,6 @@ public class objServer {
         ) {
             // Receive a list of Person objects
             Object receivedObject = input.readObject();
-
-            /*if (receivedObject instanceof List<?>) {
-                //@SuppressWarnings("unchecked")
-                List<Person> personList = (List<Person>) receivedObject;
-
-                long bytesInResponse = 0;
-                //Send a response back to the client and counting sent bytes
-                for (Person person : personList) {
-                    System.out.println(person);
-
-                    // Send a response back to the client
-                    String response = "Hello, " + person.getName() + "! Your message has ID " + person.getNumID();
-                    long beforeBytesSent = countingOutputStream.getBytesWritten();
-                    try {
-                        output.writeObject(response);
-                        output.flush();
-                    }
-                    catch (IOException e) {
-                        System.err.println("Error sending response to client: " + e.getMessage());
-                        break; // Stop writing if the connection is closed
-                    }
-                    long afterBytesSent = countingOutputStream.getBytesWritten();
-                    bytesInResponse += (afterBytesSent - beforeBytesSent);
-                }
-                System.out.println("Bytes sent from server to client in response: " + bytesInResponse);
-            }*/
 
             // Measure how many bytes the server received from the client
             long receivedBytes = countingInputStream.getBytesRead();
