@@ -25,9 +25,9 @@ public class jsonServer {
         try {
             DataInputStream dis = new DataInputStream(connectionSocket.getInputStream());
 
-            // Read the length of the JSON data (4 bytes)
+            // Receive the length of the JSON data
             int dataLength = dis.readInt();
-            System.out.println("Expected JSON size: " + dataLength + " bytes");
+            System.out.println("Received JSON size: " + dataLength + " bytes");
 
             // Read the JSON data
             byte[] dataBuffer = new byte[dataLength];
