@@ -15,30 +15,28 @@ public class xmlClient {
             CountingOutputStream countingOutputStream = new CountingOutputStream(socket.getOutputStream());
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(countingOutputStream), true);
 
-            int numPersons = 2000000;
+            int numPersons = 200;
 
             //Create a list of Person objects
             List<Person> personList = PersonManager.generatePersons(numPersons);
-            System.out.println("length: " + personList.size());
+            //System.out.println("length: " + personList.size());
 
-            //Serialize and send each Person as XML
+            // Serialize object to XML
             XmlMapper xmlMapper = new XmlMapper();
-            long totalBytesSent = 0;
+            String xmlData = xmlMapper.writeValueAsString(personList);
+            byte[] xmlBytes = xmlData.getBytes();
 
-            for (Person person : personList) {
-                String xmlData = xmlMapper.writeValueAsString(person);
-                writer.println(xmlData); //Send XML data to server
-                writer.flush();
+            // Calculate the size of the serialized XML data
+            int serializedSize = xmlBytes.length;
 
-                long bytesSentForPerson = countingOutputStream.getBytesWritten() - totalBytesSent;
-                totalBytesSent += bytesSentForPerson;
+            // Send the XML data over a socket
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
-                System.out.println("Sent Person as XML: " + xmlData);
-                System.out.println("Bytes sent for this Person: " + bytesSentForPerson + " bytes");
-            }
+            // Send the XML data
+            dataOutputStream.write(xmlBytes);
 
-            System.out.println("Total bytes sent for all Persons: " + totalBytesSent + " bytes");
-
+            System.out.println("Serialized XML size: " + serializedSize + " bytes");
+            System.out.println("Sent XML data:\n" + xmlData);
         }
         catch (IOException e) {
             System.err.println("Client error: " + e.getMessage());

@@ -22,24 +22,32 @@ public class xmlServer {
     }
 
     public static void handleClient(Socket connectionSocket) {
-        try (
-                CountingInputStream countingInputStream = new CountingInputStream(connectionSocket.getInputStream());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(countingInputStream));
-        ) {
-            //Read XML data from the client
-            StringBuilder xmlDataBuilder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                xmlDataBuilder.append(line).append("\n");
+        try {
+            DataInputStream dataInputStream = new DataInputStream(connectionSocket.getInputStream());
+            InputStream inputStream = connectionSocket.getInputStream();
+
+            //Receive the length of the xml data
+            int dataLength = dataInputStream.readInt();
+            System.out.println("Received xml size: " + dataLength + " bytes");
+
+            //Read the XML data from the client
+            StringBuilder stringBuilder = new StringBuilder();
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+
+            //Read the input stream in chunks
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                stringBuilder.append(new String(buffer, 0, bytesRead));
             }
-            String xmlData = xmlDataBuilder.toString();
+
+            System.out.println("bytes read: " + stringBuilder.length() + " bytes");
+
+            String xmlData = stringBuilder.toString();
             System.out.println("Received XML data:\n" + xmlData);
 
-            //Measure bytes received
-            long receivedBytes = countingInputStream.getBytesRead();
-            System.out.println("Total bytes received from client: " + receivedBytes);
-
-        } catch (IOException e) {
+            connectionSocket.close();
+        }
+        catch (IOException e) {
             System.err.println("Error handling client: " + e.getMessage());
             e.printStackTrace();
         }
