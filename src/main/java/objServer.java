@@ -30,7 +30,7 @@ public class objServer {
                 CountingOutputStream countingOutputStream = new CountingOutputStream(connectionSocket.getOutputStream());
                 ObjectOutputStream output = new ObjectOutputStream(countingOutputStream)
         ) {
-            // Receive a list of Serialization_TCP_P2C_in_java.src.Person objects
+            // Receive a list of Person objects
             Object receivedObject = input.readObject();
 
             if (receivedObject instanceof List<?>) {
@@ -62,7 +62,6 @@ public class objServer {
             // Measure how many bytes the server received from the client
             long receivedBytes = countingInputStream.getBytesRead();
             System.out.println("Total bytes received from client: " + receivedBytes);
-
         }
         catch (EOFException e) {
             System.err.println("Client disconnected: " + e.getMessage());

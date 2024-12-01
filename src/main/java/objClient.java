@@ -17,10 +17,10 @@ public class objClient {
 
             int numPersons = 200;
 
-            //Create and send a list of Serialization_TCP_P2C_in_java.src.Person objects
+            //Create and send a list of Person objects
             List<Person> personList = PersonManager.generatePersons(numPersons);
 
-            // Send the list of Serialization_TCP_P2C_in_java.src.Person objects
+            //Send the list of Person objects
             long beforeBytes = countingOutputStream.getBytesWritten();
             output.writeObject(personList);
             output.flush();
@@ -29,11 +29,11 @@ public class objClient {
             System.out.println("Bytes sent for the list of Person objects: " + (afterBytes - beforeBytes));
             System.out.println("List with " + numPersons + " Person objects sent to server.");
 
-            // Receive responses for each Serialization_TCP_P2C_in_java.src.Person
+            //Receive responses for each Person
             for (int i = 0; i < personList.size(); i++) {
                 try {
                     Object response = input.readObject();
-                    //System.out.println("Response from server: " + response);
+                    System.out.println("Response from server: " + response);
                 }
                 catch (EOFException e) {
                     System.err.println("Server closed connection unexpectedly.");
