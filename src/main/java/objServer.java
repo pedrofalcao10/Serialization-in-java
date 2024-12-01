@@ -33,7 +33,7 @@ public class objServer {
             // Receive a list of Person objects
             Object receivedObject = input.readObject();
 
-            if (receivedObject instanceof List<?>) {
+            /*if (receivedObject instanceof List<?>) {
                 //@SuppressWarnings("unchecked")
                 List<Person> personList = (List<Person>) receivedObject;
 
@@ -57,7 +57,7 @@ public class objServer {
                     bytesInResponse += (afterBytesSent - beforeBytesSent);
                 }
                 System.out.println("Bytes sent from server to client in response: " + bytesInResponse);
-            }
+            }*/
 
             // Measure how many bytes the server received from the client
             long receivedBytes = countingInputStream.getBytesRead();
