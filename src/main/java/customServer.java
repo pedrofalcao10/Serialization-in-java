@@ -25,28 +25,45 @@ public class customServer {
     public static void handleClient(Socket connectionSocket) {
         try (
                 CountingInputStream countingInputStream = new CountingInputStream(connectionSocket.getInputStream());
-                DataInputStream input = new DataInputStream(countingInputStream)
+                ObjectInputStream input = new ObjectInputStream(countingInputStream)
         ) {
-            while (true) {
-                // Read and log each field
-                String name = input.readUTF();
-                String localization = input.readUTF();
-                int age = input.readInt();
-                int numID = input.readInt();
+            System.out.println("Receiving Person objects...");
 
-                System.out.println("Received Person:");
-                System.out.println("  Name (String): " + name);
-                System.out.println("  Localization (String): " + localization);
-                System.out.println("  Age (int): " + age);
-                System.out.println("  NumID (int): " + numID);
-                System.out.println("-----------------------");
+            while (true) {
+                try {
+                    System.out.println("Received Person:");
+
+                    // Receive and print fields one by one
+                    String name = (String) input.readObject();
+                    System.out.println("  Name (String): " + name);
+
+                    String localization = (String) input.readObject();
+                    System.out.println("  Localization (String): " + localization);
+
+                    int age = (int) input.readObject();
+                    System.out.println("  Age (int32): " + age);
+
+                    String numID = (String) input.readObject();
+                    System.out.println("  numID (String): " + numID);
+
+                    System.out.println("----------------------------------------------");
+                }
+                catch (EOFException e) {
+                    System.out.println("Finished receiving all Person objects.");
+                    break;
+                }
             }
+
+            // Measure how many bytes the server received from the client
+            long receivedBytes = countingInputStream.getBytesRead();
+            System.out.println("Total bytes received from client: " + receivedBytes);
         }
         catch (EOFException e) {
             System.out.println("Client disconnected.");
         }
-        catch (IOException e) {
-            System.err.println("Error handling client: " + e.getMessage());
+        catch (IOException | ClassNotFoundException e) {
+            System.err.println("Client Handler exception: " + e.getMessage());
+            e.printStackTrace();
         }
         finally {
             try {
@@ -58,4 +75,5 @@ public class customServer {
         }
     }
 }
+
 

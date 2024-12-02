@@ -11,33 +11,39 @@ public class customClient {
             System.out.println("Connected to server.");
 
             CountingOutputStream countingOutputStream = new CountingOutputStream(socket.getOutputStream());
-            DataOutputStream output = new DataOutputStream(countingOutputStream);
+            ObjectOutputStream output = new ObjectOutputStream(countingOutputStream);
 
-            // Generate and send Person objects one field at a time
-            List<Person> personList = PersonManager.generatePersons(3);
+            int numPersons = 3;
 
+            // Create and send individual fields for each Person
+            List<Person> personList = PersonManager.generatePersons(numPersons);
+
+            long totalBytesSent = 0;
             for (Person person : personList) {
-                output.writeUTF(person.getName());           // Send name (String)
-                System.out.println("Sent Name: " + person.getName());
+                System.out.println("Sending Person: " + person);
 
-                output.writeUTF(person.getLocalization());  // Send localization (String)
-                System.out.println("Sent Localization: " + person.getLocalization());
+                output.writeObject(person.getName()); // Send name (String)
+                System.out.println("  Name (String): " + person.getName());
 
-                output.writeInt(person.getAge());           // Send age (int)
-                System.out.println("Sent Age: " + person.getAge());
+                output.writeObject(person.getLocalization()); // Send localization (String)
+                System.out.println("  Localization (String): " + person.getLocalization());
 
-                output.writeUTF(person.getNumID());         // Send numID (int)
-                System.out.println("Sent NumID: " + person.getNumID());
+                output.writeObject(person.getAge()); // Send age (int32)
+                System.out.println("  Age (int32): " + person.getAge());
 
-                System.out.println("-----------------------");
+                output.writeObject(person.getNumID()); // Send numID (String)
+                System.out.println("  numID (String): " + person.getNumID());
+
+                System.out.println("----------------------------------------------");
+
+                totalBytesSent = countingOutputStream.getBytesWritten();
             }
 
-            // Calculate and print total bytes sent
-            long totalBytes = countingOutputStream.getBytesWritten();
-            System.out.println("Total bytes sent: " + totalBytes);
-
-        } catch (IOException e) {
+            System.out.println("Total bytes sent for all Persons: " + totalBytesSent + " bytes");
+        }
+        catch (IOException e) {
             System.err.println("Client error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
