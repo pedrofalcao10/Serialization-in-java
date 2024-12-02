@@ -15,7 +15,7 @@ public class xmlClient {
             CountingOutputStream countingOutputStream = new CountingOutputStream(socket.getOutputStream());
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(countingOutputStream), true);
 
-            int numPersons = 200;
+            int numPersons = 3;
 
             //Create a list of Person objects
             List<Person> personList = PersonManager.generatePersons(numPersons);
