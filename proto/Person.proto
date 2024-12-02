@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_package = "com.example.protobuf";
+option java_outer_classname = "PersonProto";
+
+message Person {
+    string name = 1;
+    string localization = 2;
+    int32 age = 3;
+    string numID = 4;
+}
+
+message PersonList {
+    repeated Person persons = 1;
+}
