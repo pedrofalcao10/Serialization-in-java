@@ -15,7 +15,7 @@ public class xmlClient {
             CountingOutputStream countingOutputStream = new CountingOutputStream(socket.getOutputStream());
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(countingOutputStream), true);
 
-            int numPersons = 3;
+            int numPersons = 20000;
 
             //Create a list of Person objects
             List<Person> personList = PersonManager.generatePersons(numPersons);
@@ -35,8 +35,8 @@ public class xmlClient {
             // Send the XML data
             dataOutputStream.write(xmlBytes);
 
-            System.out.println("Serialized XML size: " + serializedSize + " bytes");
             System.out.println("Sent XML data:\n" + xmlData);
+            System.out.println("Serialized XML size: " + serializedSize + " bytes");
         }
         catch (IOException e) {
             System.err.println("Client error: " + e.getMessage());

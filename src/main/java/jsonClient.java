@@ -12,7 +12,7 @@ public class jsonClient {
         try (Socket socket = new Socket(HOST, PORT)) {
             System.out.println("Connected to server.");
 
-            int numPersons = 3;
+            int numPersons = 20000;
 
             //Create a list of Person objects
             List<Person> personList = PersonManager.generatePersons(numPersons);

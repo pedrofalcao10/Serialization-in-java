@@ -13,7 +13,7 @@ public class customClient {
             CountingOutputStream countingOutputStream = new CountingOutputStream(socket.getOutputStream());
             ObjectOutputStream output = new ObjectOutputStream(countingOutputStream);
 
-            int numPersons = 3;
+            int numPersons = 20000;
 
             // Create and send individual fields for each Person
             List<Person> personList = PersonManager.generatePersons(numPersons);

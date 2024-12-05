@@ -15,7 +15,7 @@ public class objClient {
 
             ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 
-            int numPersons = 3;
+            int numPersons = 20000;
 
             //Create and send a list of Person objects
             List<Person> personList = PersonManager.generatePersons(numPersons);

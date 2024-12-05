@@ -18,7 +18,7 @@ public class protobufClient {
             // Generate a list of custom Person objects
             PersonList.Builder personListBuilder = PersonList.newBuilder();
 
-            int numPersons = 3;
+            int numPersons = 20000;
 
             // Generate Person instances
             for (int i = 0; i < numPersons; i++) {
